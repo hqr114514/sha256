@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 #define ui unsigned int
 #define ull unsigned long long
 #define uc unsigned char
