@@ -32,10 +32,10 @@ ui H[8] = {
 };
 
 void block(uc data[64]) {
-	ui w[64] = { 0 };//½«512bit×ª»»Îª16¸ö32bitµÄÎŞ·ûºÅÕûÊı
-	//×ª»»:
+	ui w[64] = { 0 };//å°†512bitè½¬æ¢ä¸º16ä¸ª32bitçš„æ— ç¬¦å·æ•´æ•°
+	//è½¬æ¢:
 	for (int t = 0, j = 0; t < 16; t++, j += 4) w[t] = (data[j] << 24) | (data[j + 1] << 16) | (data[j + 2] << 8) | data[j + 3];
-	//À©³ä:
+	//æ‰©å……:
 	for (int t = 16; t < 64; t++) w[t] = o1(w[t - 2]) + w[t - 7] + o0(w[t - 15]) + w[t - 16];
 	ui a = H[0];
 	ui b = H[1];
@@ -70,21 +70,21 @@ void block(uc data[64]) {
 
 void sha256(const char* FileName,uc* out) {
 	ifstream fin(FileName, ios::binary);
-	fin.seekg(0, ios::end);//ÎÄ¼şÖ¸ÕëÒÆ¶¯ÖÁ×îºó
-	ull siz = fin.tellg();//»ñÈ¡×Ü³¤¶È
-	fin.seekg(0, ios::beg);//ÎÄ¼şÖ¸ÕëÒÆµ½¿ªÍ·
+	fin.seekg(0, ios::end);//æ–‡ä»¶æŒ‡é’ˆç§»åŠ¨è‡³æœ€å
+	ull siz = fin.tellg();//è·å–æ€»é•¿åº¦
+	fin.seekg(0, ios::beg);//æ–‡ä»¶æŒ‡é’ˆç§»åˆ°å¼€å¤´
 	uc data[64] = { 0 };//64B = 512bit Data
-	while (fin.read((char*)data, 64)) {//Ñ­»·´¦Àí512bitµÄ¿é
-		//´¦Àí¿é:
+	while (fin.read((char*)data, 64)) {//å¾ªç¯å¤„ç†512bitçš„å—
+		//å¤„ç†å—:
 		block(data);
 		memset(data, 0, 64 * sizeof(uc));
 	}
-	//´¦ÀíÊ£Óà
+	//å¤„ç†å‰©ä½™
 	ui rest = fin.gcount();
-	data[rest] = 0x80;//Ìî1
-	for (int i = rest + 1; i < 64; i++) data[i] = 0;//Ìî0
+	data[rest] = 0x80;//å¡«1
+	for (int i = rest + 1; i < 64; i++) data[i] = 0;//å¡«0
 	if (rest > 55) {
-		//Òª·ÖÁ½¿é
+		//è¦åˆ†ä¸¤å—
 		block(data);
 		memset(data, 0, 64 * sizeof(uc));
 	}
